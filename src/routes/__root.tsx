@@ -35,8 +35,12 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
+  const err =
+    error instanceof Error
+      ? error
+      : new Error(typeof error === "string" ? error : "Unknown error");
+  console.error(err);
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
